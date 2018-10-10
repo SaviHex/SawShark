@@ -7,15 +7,16 @@ public class RadarController : MonoBehaviour
 {
     [Header("Positions")]
     public Transform player;
-    public List<Transform> pointsOfInterest;    
-
-    //public Transform nearestPoint;
+    //public List<Transform> pointsOfInterest;
+    public Transform nearestPoint;
+    
 
     [Header("GUI")]
     public GameObject pointerPrefab;
-    public List<RectTransform> pointers;
+    public RectTransform pointer;
+    //public List<RectTransform> pointers;
 
-    //public RectTransform arrow;
+    
 
     [Header("Screen")]
     public float margin;
@@ -27,20 +28,21 @@ public class RadarController : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Shark").GetComponent<Transform>();
         height = Camera.main.orthographicSize - margin;
         width = Mathf.Ceil((Camera.main.orthographicSize * Screen.width) / Screen.height) - margin;
+        pointer = Instantiate(pointerPrefab, transform).GetComponent<RectTransform>();
     }
 
     private void Update()
     {
-        int len = pointsOfInterest.Count;
-        for(int i = 0; i < len; i++)
-        {
-            Move(pointers[i], pointsOfInterest[i].position);
-        }
-
-        //if (nearestPoint != null)
+        //int len = pointsOfInterest.Count;
+        //for(int i = 0; i < len; i++)
         //{
-        //    MoveArrow(player.position, nearestPoint.position);
+        //    Move(pointers[i], pointsOfInterest[i].position);
         //}
+
+        if (nearestPoint != null)
+        {
+            Move(pointer, nearestPoint.position);
+        }
     }
 
     private void Move(RectTransform pointer, Vector2 target)
@@ -64,6 +66,12 @@ public class RadarController : MonoBehaviour
         pointer.position = dir;
     }
 
+    public void SetNearestPoint(Transform t)
+    {
+        nearestPoint = t;
+    }
+
+    /*
     public void AddPointOfInterest(Transform t)
     {
         // Adds the transform.
@@ -72,7 +80,7 @@ public class RadarController : MonoBehaviour
         GameObject newPointer = Instantiate(pointerPrefab, transform);
         pointers.Add(newPointer.GetComponent<RectTransform>());
     }
-
+   
     public void RemovePointOfInterest(Transform t)
     {
         int i;
@@ -89,4 +97,5 @@ public class RadarController : MonoBehaviour
             }                
         }
     }
+    */
 }

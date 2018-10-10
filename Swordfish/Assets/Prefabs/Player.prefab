@@ -368,7 +368,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 0}
-  speed: 100
+  speed: 130
   rotationSpeed: 500
   stamina: 0
   drainSpeed: 0.05
@@ -419,12 +419,14 @@ MonoBehaviour:
   garbageDelimiter: {fileID: 0}
   container: {fileID: 0}
   prefabs:
-  - {fileID: 1681907936191934, guid: 04e91dd079972e44baa7899c537ab2d9, type: 2}
-  - {fileID: 1681907936191934, guid: 04e91dd079972e44baa7899c537ab2d9, type: 2}
-  - {fileID: 1681907936191934, guid: 04e91dd079972e44baa7899c537ab2d9, type: 2}
   - {fileID: 1188323744773166, guid: 83e89f48d1f415e4b8d1b74989490007, type: 2}
-  - {fileID: 1614864016606808, guid: 126e4e1157eefe24488a12ed3204e62f, type: 2}
+  - {fileID: 1188323744773166, guid: 83e89f48d1f415e4b8d1b74989490007, type: 2}
+  - {fileID: 1188323744773166, guid: 83e89f48d1f415e4b8d1b74989490007, type: 2}
   - {fileID: 1108292493042462, guid: f7e8f33e06fa4f1489e6f61a51438bbd, type: 2}
+  - {fileID: 1614864016606808, guid: 126e4e1157eefe24488a12ed3204e62f, type: 2}
+  - {fileID: 1681907936191934, guid: 04e91dd079972e44baa7899c537ab2d9, type: 2}
+  - {fileID: 1681907936191934, guid: 04e91dd079972e44baa7899c537ab2d9, type: 2}
+  - {fileID: 1681907936191934, guid: 04e91dd079972e44baa7899c537ab2d9, type: 2}
   minItems: 1
   maxItems: 1
   distance: 200

@@ -10,6 +10,7 @@ TagManager:
   - Particle
   - Shark
   - Radar
+  - Fish
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - SharkSaw
   - SharkBody
   - PersonalSpace
-  - 
+  - PointOfInterestManager
   - 
   - 
   - 

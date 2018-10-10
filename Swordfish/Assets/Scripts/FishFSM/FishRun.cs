@@ -21,7 +21,7 @@ public class FishRun : FishBaseFSM {
     {
         var dir = (shark.transform.position - fish.transform.position);
         fish.transform.up = Vector3.Slerp(fish.transform.up, (fish.transform.position + dir) - fish.transform.position, 2 * rotationSpeed * Time.deltaTime);
-        Debug.DrawLine(fish.transform.position, shark.transform.position, Color.red); // Debug.
+        //Debug.DrawLine(fish.transform.position, shark.transform.position, Color.red); // Debug.
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state

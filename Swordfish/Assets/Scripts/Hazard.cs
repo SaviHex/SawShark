@@ -9,7 +9,7 @@ public class Hazard : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Player player = collision.GetComponentInParent<Player>();
-
+        
         if (player != null && collision.CompareTag("Shark"))
         {
             GameManager gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();

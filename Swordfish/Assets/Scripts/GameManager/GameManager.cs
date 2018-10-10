@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
         }
 
         deathScreen.SetActive(true);
-        scoreText.text += highscore;
+        scoreText.text += timeLeft;
 
         newRecordText.SetActive(newRecord);
 

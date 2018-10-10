@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PointOfInterest : MonoBehaviour
 {
+    /*
     public RadarController radar;
     public List<Transform> children;
     private Transform[] beginningChildrenState;
@@ -102,4 +103,5 @@ public class PointOfInterest : MonoBehaviour
             UpdatePoint();
         }
     }
+    */
 }

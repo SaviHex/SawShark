@@ -6,24 +6,24 @@ using UnityEngine;
 public class Killable : MonoBehaviour
 {
     private Drops[] drops;
-    private PointOfInterest container;
+    //private PointOfInterest container;
     public bool possibleRemovalEvaluated;
     public static float distanceLimit = 80f;
 
     private void Start()
     {
         drops = GetComponents<Drops>();
-        container = GetComponentInParent<PointOfInterest>();
+        //container = GetComponentInParent<PointOfInterest>();
         possibleRemovalEvaluated = false;
     }
 
     private void Update()
     {
-        if(!possibleRemovalEvaluated && container != null && Vector3.Distance(transform.position, container.transform.position) > distanceLimit)
-        {
-            possibleRemovalEvaluated = true;
-            container.RemoveChild(transform);
-        }
+        //if(!possibleRemovalEvaluated && container != null && Vector3.Distance(transform.position, container.transform.position) > distanceLimit)
+        //{
+        //    possibleRemovalEvaluated = true;
+        //    container.RemoveChild(transform);
+        //}
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -44,10 +44,10 @@ public class Killable : MonoBehaviour
 
     private void Die()
     {
-        if(container != null)
-        {
-            container.RemoveChild(transform);
-        }
+        //if(container != null)
+        //{
+        //    container.RemoveChild(transform);
+        //}
 
         DropAllLoot();
         Destroy(gameObject);
