@@ -71,8 +71,8 @@ public class PointsOfInterestManager : MonoBehaviour
                         nearestPoint = pointsOfInterest[i];
                     }
                 }
-
-                yield return new WaitForSeconds(recalculationTimeOut);
+                
+                yield return new WaitForEndOfFrame();
             }
 
             radar.SetNearestPoint(nearestPoint);

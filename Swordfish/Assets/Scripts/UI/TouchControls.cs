@@ -4,13 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class TouchControls : MonoBehaviour
-{
+{    
     public bool rightPressed;
     public bool leftPressed;
 
     private float value;    
     private float target;
-    public float velocity = 10;
+    public float velocity = 10;   
 
     public float Value { get { return value; } }
 
@@ -41,6 +41,18 @@ public class TouchControls : MonoBehaviour
     {
         leftPressed = false;
         UpdateAxisValue(0f);
+    }
+
+    public void FakePressLeft()
+    {
+        RightUp();
+        LeftDown();
+    }
+
+    public void FakePressRight()
+    {
+        LeftUp();
+        RightDown();
     }
 
     private void Update()

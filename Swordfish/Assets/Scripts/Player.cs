@@ -145,6 +145,7 @@ public class Player : MonoBehaviour {
 
         #region Animation
         anim.SetFloat("Stamina", stamina);
+        anim.SetFloat("InputX", inputX);        
         #endregion
 
         if (stamina == 0)
@@ -184,8 +185,8 @@ public class Player : MonoBehaviour {
         if(stamina > 1f)
         {
             stamina = 1f;
-        }
-
+        }        
+        
         anim.SetTrigger("Eat");
     }
 

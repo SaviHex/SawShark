@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using EZCameraShake;
 
 public class GameManager : MonoBehaviour
 {
     [Header("Death Screen")]
-    public GameObject deathScreen;
-    public Text scoreText;
-    public Text messageText;
-    public GameObject newRecordText;
+    public GameObject deathScreen;  
     [Range(0.1f, 0.9f)]
     public float slowDownSpeed;
 
@@ -39,24 +37,24 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         // Saves the highscore.        
+        LastPointStats.Instance.Time = timeLeft;
         int highscore = PlayerPrefs.GetInt("HighScore", 0);
-        bool newRecord = timeLeft > highscore;
+        bool newRecord = LastPointStats.Instance.Time > highscore;
         if (newRecord)
         {
-            PlayerPrefs.SetInt("HighScore", timeLeft);
+            PlayerPrefs.SetInt("HighScore", LastPointStats.Instance.Time);            
             PlayerPrefs.Save();
-            highscore = timeLeft;
+            highscore = LastPointStats.Instance.Time;
         }
 
-        deathScreen.SetActive(true);
-        scoreText.text += timeLeft;
+        string serializedLastPointStats = JsonUtility.ToJson(LastPointStats.Instance);
+        Debug.Log(serializedLastPointStats);
+        PlayerPrefs.SetString("LastPointStats", serializedLastPointStats);
+        PlayerPrefs.Save();
 
-        newRecordText.SetActive(newRecord);
-
-        messageText.text = "I don't know what to say here. You're dead. That's it, man... It's over now. You can go back to the menu and play the game again instead of reading this uninteresting piece of text.";
-        
-        StopCoroutine(timer);
-        //StartCoroutine(SlowDown());
+        CameraShaker.Instance.ShakeOnce(9f, 10f, .1f, .75f);
+        deathScreen.SetActive(true);           
+        timeLeft = -100; // Stop CountDown()
     }
 
     private IEnumerator CountDown()
@@ -74,7 +72,9 @@ public class GameManager : MonoBehaviour
             }            
         }
 
-        Debug.Log("Next Level!");
+        var deathAnim = deathScreen.GetComponent<Animator>();        
+        yield return new WaitForSeconds(deathAnim.GetCurrentAnimatorStateInfo(0).length);        
+        SceneManager.LoadScene("GameOver"); // GameOver...        
     }
 
     private IEnumerator SlowDown()
@@ -92,5 +92,5 @@ public class GameManager : MonoBehaviour
     public void ShakeStamina()
     {
         staminaAnim.SetTrigger("Shake");
-    }
+    }        
 }
