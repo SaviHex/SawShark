@@ -47,7 +47,7 @@ public class SceneLoader : MonoBehaviour
 
         while (!async.isDone)
         {
-            progressText.text = ((async.progress + 0.1f) * 100).ToString();
+            progressText.text = Mathf.RoundToInt((async.progress + 0.1f) * 100).ToString();
             yield return new WaitForEndOfFrame();
         }
 

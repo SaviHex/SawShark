@@ -9,7 +9,6 @@ public class Killable : MonoBehaviour
     //private PointOfInterest container;
     public bool possibleRemovalEvaluated;
     public static float distanceLimit = 80f;
-    public bool isTorpedoKill = false;
 
     private void Start()
     {
@@ -28,19 +27,17 @@ public class Killable : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
-    {        
+    {
         if (collision.CompareTag("Shark") || collision.CompareTag("Torpedo"))
         {
-            isTorpedoKill = (collision.CompareTag("Shark")) ? false : true; 
-            Die();         
+            Die();
         }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
-    {    
+    {
         if (collision.CompareTag("Shark") || collision.CompareTag("Torpedo"))
         {
-            isTorpedoKill = (collision.CompareTag("Shark")) ? false : true;
             Die();
         }
     }
@@ -52,20 +49,17 @@ public class Killable : MonoBehaviour
         //    container.RemoveChild(transform);
         //}
 
-        // Counters will increment only when the player kills, torpedo kills don't count.
-        if (!isTorpedoKill)
+        if (tag == "Fish")
         {
-            if (tag == "Fish")
-            {
-                LastPointStats.Instance.Fish += 1;
-                Debug.Log("Fish++");
-            }
-            else
-            {
-                LastPointStats.Instance.Squid += 1;
-                Debug.Log("Squid++");
-            }
+            LastPointStats.Instance.Fish += 1;
+            Debug.Log("Fish++");
         }
+        else
+        {
+            LastPointStats.Instance.Squid += 1;
+            Debug.Log("Squid++");
+        }
+
 
         DropAllLoot();
         Destroy(gameObject);
@@ -73,7 +67,7 @@ public class Killable : MonoBehaviour
 
     private void DropAllLoot()
     {
-        foreach(Drops d in drops)
+        foreach (Drops d in drops)
         {
             d.DropLoot();
         }

@@ -10,7 +10,6 @@ public class StatsSummary : MonoBehaviour
     public int fish;
     public int squid;
     public int torpedo;
-    public int torpedoKill;
     public int time;
     public int total;
 
@@ -18,44 +17,47 @@ public class StatsSummary : MonoBehaviour
     public TextMeshProUGUI fishText;
     public TextMeshProUGUI squidText;
     public TextMeshProUGUI torpedoText;
-    public TextMeshProUGUI torpedoKillText;
     public TextMeshProUGUI timeText;
     public TextMeshProUGUI totalText;
+
+    [Header("Humour")]
+    public TextAsset dialogSource;
+    public TextMeshProUGUI messageText;
 
     private int fishCounter;
     private int squidCounter;
     private int torpedoCounter;
-    private int torpedoKillCounter;
     private int timeCounter;
     private int totalCounter;
 
     private void Awake()
     {
         string serialized = PlayerPrefs.GetString("LastPointStats");
+        Debug.Log(serialized);
         var lastPointStats = JsonUtility.FromJson<LastPointStats>(serialized);
-        
+
         fish = lastPointStats.Fish;
         squid = lastPointStats.Squid;
         torpedo = lastPointStats.Torpedo;
-        torpedoKill = lastPointStats.TorpedoKill;
         time = lastPointStats.Time;
         CalculateTotal();
         lastPointStats.Total = total;
 
         AddToTotalPlayerStats(lastPointStats);
-
+        /*
         fishText.text = fish.ToString();
         squidText.text = squid.ToString();
         torpedoText.text = (torpedo * -1).ToString();
-        torpedoKillText.text = torpedoKill.ToString();
         timeText.text = time.ToString();
-        
         totalText.text = total.ToString();
+        */
+
+        StartCoroutine(CountUpFields());
     }
 
     private void CalculateTotal()
     {
-        total = (fish + (squid * 2) + (torpedo * -2) + (torpedoKill * 3) + time);
+        total = (fish + (squid * 3) + (torpedo * -2) + time);
     }
 
     private void UpdateUI()
@@ -63,28 +65,94 @@ public class StatsSummary : MonoBehaviour
         fishText.text = fishCounter.ToString();
         squidText.text = squidCounter.ToString();
         torpedoText.text = (torpedoCounter * -1).ToString();
-        torpedoKillText.text = torpedoKillCounter.ToString();
         timeText.text = timeCounter.ToString();
+        totalText.text = totalCounter.ToString();
+    }
+
+    private IEnumerator CountUpFields()
+    {        
+        float interpolation = 0f;
+        while (interpolation < 1f)
+        {
+            interpolation += 0.1f;
+
+            fishCounter = Counter(interpolation, fish);
+            squidCounter = Counter(interpolation, squid);
+            torpedoCounter = Counter(interpolation, torpedo);
+            timeCounter = Counter(interpolation, time);
+            totalCounter = Counter(interpolation, total);
+            
+            UpdateUI();
+
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    private int Counter(float interp, int target)
+    {
+        return (int)Mathf.Lerp(0, target, interp);
     }
 
     private void AddToTotalPlayerStats(LastPointStats lastPoints)
     {
         if (!PlayerPrefs.HasKey("PlayerStats"))
         {
-            PlayerPrefs.SetString("PlayerStats", JsonUtility.ToJson(new PlayerStats()));
+            PlayerPrefs.SetString("PlayerStats", JsonUtility.ToJson(PlayerStats.Instance));
+            PlayerPrefs.Save();
+            Debug.Log("Novo Player Stats");
         }
 
         string totalStatsSerialized = PlayerPrefs.GetString("PlayerStats");
-        var playerStats = JsonUtility.FromJson<PlayerStats>(totalStatsSerialized);
+        Debug.Log(totalStatsSerialized);
+        PlayerStats.Instance = JsonUtility.FromJson<PlayerStats>(totalStatsSerialized);
+        bool isNewRecord = (lastPoints.Time > PlayerStats.Instance.RecordTime);
 
-        playerStats.DeathCounter += 1;
-        playerStats.TotalFish += lastPoints.Fish;
-        playerStats.TotalSquid += lastPoints.Squid;
-        playerStats.TotalTorpedo += lastPoints.Torpedo;
-        playerStats.TotalTorpedoKill += lastPoints.TorpedoKill;
-        playerStats.TotalPoints += lastPoints.Total;
-        playerStats.RecordTime = PlayerPrefs.GetInt("HighScore", 0);
+        PlayerStats.Instance.DeathCounter += 1;
+        PlayerStats.Instance.TotalFish += lastPoints.Fish;
+        PlayerStats.Instance.TotalSquid += lastPoints.Squid;
+        PlayerStats.Instance.TotalTorpedo += lastPoints.Torpedo;
+        PlayerStats.Instance.TotalPoints += lastPoints.Total;
+        PlayerStats.Instance.RecordTime = PlayerPrefs.GetInt("HighScore", 0);
 
-        PlayerPrefs.SetString("PlayerStats", JsonUtility.ToJson(playerStats));
+        PlayerPrefs.SetString("PlayerStats", JsonUtility.ToJson(PlayerStats.Instance));
+        PlayerPrefs.Save();
+
+        totalStatsSerialized = PlayerPrefs.GetString("PlayerStats");
+        Debug.Log(totalStatsSerialized);
+
+        RandomQuotes rq = new RandomQuotes(dialogSource)
+        {
+            ignoreEntries = new List<int> { 0, 1, 2, 3 }
+        };
+
+        switch (PlayerStats.Instance.DeathCounter)
+        {
+            case 1:
+                messageText.text = rq.entries[0];
+                break;
+            case 2:
+                messageText.text = rq.entries[1];
+                break;
+            case 3:
+                messageText.text = rq.entries[2];
+                break;
+            default:
+                // Let's be funny.        
+                if (isNewRecord)
+                {
+                    messageText.text = "New Record! Good one bro. But you will never beat my 999999 seconds record, ha ha ha!";
+                }
+                else
+                {
+                    if (lastPoints.Time > 150)
+                    {
+                        rq.ignoreEntries.Remove(3);
+                    }
+
+                    messageText.text = rq.PickRandomQuote();
+                }
+                break;
+        }
+
     }
 }

@@ -8,8 +8,7 @@ public class LastPointStats
 
     public int Fish;
     public int Squid;
-    public int Torpedo;
-    public int TorpedoKill;
+    public int Torpedo;    
     public int Time;
     public int Total;
 

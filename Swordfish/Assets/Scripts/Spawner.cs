@@ -30,7 +30,7 @@ public class Spawner : MonoBehaviour
 
         Instantiate(prefabs[index], spawnPoint, Quaternion.identity, container);
 
-        Debug.Log("Spawn: Obj: " + prefabs[index].name + " At: " + spawnPoint);
+        //Debug.Log("Spawn: Obj: " + prefabs[index].name + " At: " + spawnPoint);
     }
 
     private Vector2 RandomPointInCircunference(float radius)
@@ -59,7 +59,7 @@ public class Spawner : MonoBehaviour
     {
         if (!ignoreTags.Contains(collision.tag))
         {
-            Debug.Log("Clean Up: " + collision.name);
+            //Debug.Log("Clean Up: " + collision.name);
             Destroy(collision.gameObject);
         }        
     }

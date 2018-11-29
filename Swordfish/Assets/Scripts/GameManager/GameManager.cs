@@ -47,8 +47,7 @@ public class GameManager : MonoBehaviour
             highscore = LastPointStats.Instance.Time;
         }
 
-        string serializedLastPointStats = JsonUtility.ToJson(LastPointStats.Instance);
-        Debug.Log(serializedLastPointStats);
+        string serializedLastPointStats = JsonUtility.ToJson(LastPointStats.Instance);        
         PlayerPrefs.SetString("LastPointStats", serializedLastPointStats);
         PlayerPrefs.Save();
 
@@ -82,7 +81,7 @@ public class GameManager : MonoBehaviour
         while (Time.timeScale > 0.2)
         {
             Time.timeScale *= slowDownSpeed;
-            Debug.Log(Time.timeScale);
+            //Debug.Log(Time.timeScale);
             yield return new WaitForSeconds(0.1f);
         }
 

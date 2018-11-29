@@ -17,29 +17,15 @@ public class Hazard : MonoBehaviour
             gm.ShakeStamina();
             CameraShaker.Instance.ShakeOnce(9f, 10f, .1f, .75f);
 
-            // A Hazard can be a squid ink so I need to check the tag.
-            if (tag == "Torpedo")
+            // A Hazard can be a squid ink so I need to check the name.
+            // (Boom objects only come from Torpedos)
+            if (name.Contains("Boom")) // The name will always be "Boom (number)"
             {
                 LastPointStats.Instance.Torpedo += 1; // Torpedo Counter
                 Debug.Log("Torpedo++");
             }
             
             player.DrainStamina(damage);
-        }
-        else
-        {
-            if(collision.tag != "Torpedo")
-            {
-                var playerTrans = GameObject.FindGameObjectWithTag("Shark").GetComponent<Transform>();
-
-                // If the torpedo kills something on screen or at least near the player.
-                // Far away and unintentional kills won't count.
-                if (Vector3.Distance(transform.position, playerTrans.position) < 160f)
-                {
-                    LastPointStats.Instance.TorpedoKill += 1;
-                    Debug.Log("TorpedoKill++");
-                }
-            }
-        }
+        }        
     }
 }
